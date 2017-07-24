@@ -8,9 +8,23 @@ type APIResource struct {
 	Url string
 }
 
+type APIResourceList struct {
+	Count    int
+	Next     string
+	Previous bool
+	Results  []APIResource
+}
+
 type NamedAPIResource struct {
 	Name string
 	Url  string
+}
+
+type NamedAPIResourceList struct {
+	Count    int
+	Next     string
+	Previous bool
+	Results  []NamedAPIResource
 }
 
 func (namedResource *NamedAPIResource) GetEndpointWithId() string {
