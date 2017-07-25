@@ -45,48 +45,24 @@ type FlavorBerryMap struct {
 	Berry   NamedAPIResource
 }
 
-func GetBerryById(id int, berry *Berry, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/berry/%v", id), berry)
+func GetBerry(p *Param, berry *Berry, client *http.Client) error {
+	err := Get(client, fmt.Sprintf("/berry/%v", p), berry)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetBerryByName(name string, berry *Berry, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/berry/%v", name), berry)
+func GetBerryFirmness(p *Param, berryFirmness *BerryFirmness, client *http.Client) error {
+	err := Get(client, fmt.Sprintf("/berry-firmness/%v", p), berryFirmness)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetBerryFirmnessById(id int, berryFirmness *BerryFirmness, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/berry-firmness/%v", id), berryFirmness)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetBerryFirmnessByName(name string, berryFirmness *BerryFirmness, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/berry-firmness/%v", name), berryFirmness)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetBerryFlavorById(id int, berryFlavor *BerryFlavor, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/berry-flavor/%v", id), berryFlavor)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetBerryFlavorByName(name string, berryFlavor *BerryFlavor, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/berry-flavor/%v", name), berryFlavor)
+func GetBerryFlavor(p *Param, berryFlavor *BerryFlavor, client *http.Client) error {
+	err := Get(client, fmt.Sprintf("/berry-flavor/%v", p), berryFlavor)
 	if err != nil {
 		return err
 	}

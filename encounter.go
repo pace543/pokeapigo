@@ -26,48 +26,24 @@ type EncounterConditionValue struct {
 	names     []Name
 }
 
-func GetEncounterMethodById(id int, encounterMethod *EncounterMethod, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/encounter-method/%v", id), encounterMethod)
+func GetEncounterMethod(p *Param, encounterMethod *EncounterMethod, client *http.Client) error {
+	err := Get(client, fmt.Sprintf("/encounter-method/%v", p), encounterMethod)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetEncounterMethodByName(name string, encounterMethod *EncounterMethod, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/encounter-method/%v", name), encounterMethod)
+func GetEncounterCondition(p *Param, encounterCondition *EncounterCondition, client *http.Client) error {
+	err := Get(client, fmt.Sprintf("/encounter-condition/%v", p), encounterCondition)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetEncounterConditionById(id int, encounterCondition *EncounterCondition, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/encounter-condition/%v", id), encounterCondition)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetEncounterConditionByName(name string, encounterCondition *EncounterCondition, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/encounter-condition/%v", name), encounterCondition)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetEncounterConditionValueById(id int, encounterConditionValue *EncounterConditionValue, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/encounter-condition-value/%v", id), encounterConditionValue)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetEncounterConditionValueByName(name string, encounterConditionValue *EncounterConditionValue, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/encounter-condition-value/%v", name), encounterConditionValue)
+func GetEncounterConditionValue(p *Param, encounterConditionValue *EncounterConditionValue, client *http.Client) error {
+	err := Get(client, fmt.Sprintf("/encounter-condition-value/%v", p), encounterConditionValue)
 	if err != nil {
 		return err
 	}

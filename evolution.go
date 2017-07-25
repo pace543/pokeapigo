@@ -46,24 +46,16 @@ type EvolutionTrigger struct {
 	Pokemon_Species []NamedAPIResource
 }
 
-func GetEvolutionChain(id int, evolutionChain *EvolutionChain, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/evolution-chain/%v", id), evolutionChain)
+func GetEvolutionChain(p *Param, evolutionChain *EvolutionChain, client *http.Client) error {
+	err := Get(client, fmt.Sprintf("/evolution-chain/%v", p), evolutionChain)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetEvolutionTriggerById(id int, evolutionTrigger *EvolutionTrigger, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/evolution-trigger/%v", id), evolutionTrigger)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetEvolutionTriggerByName(name string, evolutionTrigger *EvolutionTrigger, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/evolution-trigger/%v", name), evolutionTrigger)
+func GetEvolutionTrigger(p *Param, evolutionTrigger *EvolutionTrigger, client *http.Client) error {
+	err := Get(client, fmt.Sprintf("/evolution-trigger/%v", p), evolutionTrigger)
 	if err != nil {
 		return err
 	}
