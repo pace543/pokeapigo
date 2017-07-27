@@ -12,8 +12,8 @@ import (
 type Client struct {
 	Http       *http.Client
 	NumWorkers int
-	jobs       chan *Job
-	results    chan *Result
+	Jobs       chan *Job
+	Results    chan *Result
 }
 
 type Job struct {
@@ -50,8 +50,8 @@ func NewClient(client *http.Client, numWorkers int) *Client {
 	} else {
 		clientPtr.NumWorkers = numWorkers
 	}
-	clientPtr.jobs = make(chan *Job)
-	clientPtr.results = make(chan *Result)
+	clientPtr.Jobs = make(chan *Job)
+	clientPtr.Results = make(chan *Result)
 	return clientPtr
 }
 
@@ -62,15 +62,15 @@ func (c *Client) Init() {
 }
 
 func (c *Client) AddJob(j *Job) {
-	c.jobs <- j
+	c.Jobs <- j
 }
 
 func (c *Client) PullResult() *Result {
-	return <-c.results
+	return <-c.Results
 }
 
 func (c *Client) worker() {
-	for job := range c.jobs {
+	for job := range c.Jobs {
 		fullUrl := fmt.Sprintf("https://pokeapi.co/api/v2/%v/%v", job.Endpoint, job.getItem())
 		result, err := c.Http.Get(fullUrl)
 		returned := new(Result)
@@ -84,7 +84,7 @@ func (c *Client) worker() {
 			returned.Error = nil
 			result.Body.Close()
 		}
-		c.results <- returned
+		c.Results <- returned
 	}
 }
 
