@@ -1,10 +1,5 @@
 package pokeapiGo
 
-import (
-	"fmt"
-	"net/http"
-)
-
 type Berry struct {
 	Id                 int
 	Name               string
@@ -43,28 +38,4 @@ type BerryFlavor struct {
 type FlavorBerryMap struct {
 	Potency int
 	Berry   NamedAPIResource
-}
-
-func GetBerry(p *Param, berry *Berry, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/berry/%v", p), berry)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetBerryFirmness(p *Param, berryFirmness *BerryFirmness, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/berry-firmness/%v", p), berryFirmness)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetBerryFlavor(p *Param, berryFlavor *BerryFlavor, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/berry-flavor/%v", p), berryFlavor)
-	if err != nil {
-		return err
-	}
-	return nil
 }

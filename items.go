@@ -1,10 +1,5 @@
 package pokeapiGo
 
-import (
-	"fmt"
-	"net/http"
-)
-
 type Item struct {
 	Id                  int
 	Name                string
@@ -65,44 +60,4 @@ type ItemPocket struct {
 	Name       string
 	Categories []NamedAPIResource
 	Names      []Name
-}
-
-func GetItem(p *Param, item *Item, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/item/%v", p), item)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetItemAttribute(p *Param, itemAttribute *ItemAttribute, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/item-attribute/%v", p), itemAttribute)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetItemCategory(p *Param, itemCategory *ItemCategory, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/item-category/%v", p), itemCategory)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetItemFlingEffect(p *Param, itemFlingEffect *ItemFlingEffect, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/item-fling-effect/%v", p), itemFlingEffect)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetItemPocket(p *Param, itemPocket *ItemPocket, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/item-pocket/%v", p), itemPocket)
-	if err != nil {
-		return err
-	}
-	return nil
 }

@@ -1,10 +1,5 @@
 package pokeapiGo
 
-import (
-	"fmt"
-	"net/http"
-)
-
 type Generation struct {
 	Id              int
 	Name            string
@@ -49,36 +44,4 @@ type VersionGroup struct {
 	Pokedexes          []NamedAPIResource
 	Regions            []NamedAPIResource
 	Versions           []NamedAPIResource
-}
-
-func GetGeneration(p *Param, generation *Generation, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/generation/%v", p), generation)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetPokedex(p *Param, pokedex *Pokedex, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/pokedex/%v", p), pokedex)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetVersion(p *Param, version *Version, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/version/%v", p), version)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetVersionGroup(p *Param, versionGroup *VersionGroup, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/version-group/%v", p), versionGroup)
-	if err != nil {
-		return err
-	}
-	return nil
 }

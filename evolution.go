@@ -1,10 +1,5 @@
 package pokeapiGo
 
-import (
-	"fmt"
-	"net/http"
-)
-
 type EvolutionChain struct {
 	Id                int
 	Baby_Trigger_Item NamedAPIResource
@@ -44,20 +39,4 @@ type EvolutionTrigger struct {
 	Name            string
 	Names           []Name
 	Pokemon_Species []NamedAPIResource
-}
-
-func GetEvolutionChain(p *Param, evolutionChain *EvolutionChain, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/evolution-chain/%v", p), evolutionChain)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetEvolutionTrigger(p *Param, evolutionTrigger *EvolutionTrigger, client *http.Client) error {
-	err := Get(client, fmt.Sprintf("/evolution-trigger/%v", p), evolutionTrigger)
-	if err != nil {
-		return err
-	}
-	return nil
 }
