@@ -61,8 +61,12 @@ func (c *Client) Init() {
 	}
 }
 
-func (c *Client) AddJob(j *Job) {
-	c.Jobs <- j
+func (c *Client) AddJobs(j ...*Job) {
+	go func() {
+		for job := range j {
+			c.Jobs <- job
+		}
+	}()
 }
 
 func (c *Client) PullResult() *Result {
@@ -82,8 +86,8 @@ func (c *Client) worker() {
 			returned.Endpoint = job.Endpoint
 			returned.Data = job.getStruct(result.Body)
 			returned.Error = nil
-			result.Body.Close()
 		}
+		result.Body.Close()
 		c.Results <- returned
 	}
 }
@@ -181,6 +185,54 @@ func (j *Job) getStruct(result io.ReadCloser) interface{} {
 		itemPocket := new(ItemPocket)
 		json.NewDecoder(result).Decode(itemPocket)
 		return itemPocket
+	case "machine":
+		machine := new(Machine)
+		json.NewDecoder(result).Decode(machine)
+		return machine
+	case "move":
+		move := new(Move)
+		json.NewDecoder(result).Decode(move)
+		return move
+	case "move-ailment":
+		moveAilment := new(MoveAilment)
+		json.NewDecoder(result).Decode(moveAilment)
+		return moveAilment
+	case "move-battle-style":
+		moveBattleStyle := new(MoveBattleStyle)
+		json.NewDecoder(result).Decode(moveBattleStyle)
+		return moveBattleStyle
+	case "move-category":
+		moveCategory := new(MoveCategory)
+		json.NewDecoder(result).Decode(moveCategory)
+		return moveCategory
+	case "move-damage-class":
+		moveDamageClass := new(MoveDamageClass)
+		json.NewDecoder(result).Decode(moveDamageClass)
+		return moveDamageClass
+	case "move-learn-method":
+		moveLearnMethod := new(MoveLearnMethod)
+		json.NewDecoder(result).Decode(moveLearnMethod)
+		return moveLearnMethod
+	case "move-target":
+		moveTarget := new(MoveTarget)
+		json.NewDecoder(result).Decode(moveTarget)
+		return moveTarget
+	case "location":
+		location := new(Location)
+		json.NewDecoder(result).Decode(location)
+		return location
+	case "location-area":
+		locationArea := new(LocationArea)
+		json.NewDecoder(result).Decode(locationArea)
+		return locationArea
+	case "pal-park-area":
+		palParkArea := new(PalParkArea)
+		json.NewDecoder(result).Decode(palParkArea)
+		return palParkArea
+	case "region":
+		region := new(Region)
+		json.NewDecoder(result).Decode(region)
+		return region
 	}
 	return nil
 }

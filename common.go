@@ -27,12 +27,12 @@ type NamedAPIResourceList struct {
 	Results  []NamedAPIResource
 }
 
-func (namedResource *NamedAPIResource) GetEndpointWithId() [2]string {
-	var arr [2]string
+func (namedResource *NamedAPIResource) GetEndpointWithId() *Job {
 	var stringSlice = strings.Split(namedResource.Url, "/")
-	arr[0] = stringSlice[len(stringSlice)-2]
-	arr[1] = stringSlice[len(stringSlice)-1]
-	return arr
+	return &Job{
+		Endpoint: stringSlice[len(stringSlice)-2],
+		Id:       stringSlice[len(stringSlice)-1],
+	}
 }
 
 type Description struct {
