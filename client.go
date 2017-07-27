@@ -12,7 +12,7 @@ import (
 type Client struct {
 	Http       *http.Client
 	NumWorkers int
-	Jobs       chan Job
+	Jobs       chan *Job
 	Results    chan *Result
 }
 
@@ -50,7 +50,7 @@ func NewClient(client *http.Client, numWorkers int) *Client {
 	} else {
 		clientPtr.NumWorkers = numWorkers
 	}
-	clientPtr.Jobs = make(chan Job)
+	clientPtr.Jobs = make(chan *Job)
 	clientPtr.Results = make(chan *Result)
 	return clientPtr
 }
@@ -80,7 +80,7 @@ func (c *Client) worker() {
 	}
 }
 
-func (j Job) getStruct(result io.ReadCloser) interface{} {
+func (j *Job) getStruct(result io.ReadCloser) interface{} {
 	if j.getItem() == "" {
 		apiResourceList := new(APIResourceList)
 		err := json.NewDecoder(result).Decode(apiResourceList)
@@ -129,6 +129,50 @@ func (j Job) getStruct(result io.ReadCloser) interface{} {
 		encounterConditionValue := new(EncounterConditionValue)
 		json.NewDecoder(result).Decode(encounterConditionValue)
 		return encounterConditionValue
+	case "evolution-chain":
+		evolutionChain := new(EvolutionChain)
+		json.NewDecoder(result).Decode(evolutionChain)
+		return evolutionChain
+	case "evolution-trigger":
+		evolutionTrigger := new(EvolutionTrigger)
+		json.NewDecoder(result).Decode(evolutionTrigger)
+		return evolutionTrigger
+	case "generation":
+		generation := new(Generation)
+		json.NewDecoder(result).Decode(generation)
+		return generation
+	case "pokedex":
+		pokedex := new(Pokedex)
+		json.NewDecoder(result).Decode(pokedex)
+		return pokedex
+	case "version":
+		version := new(Version)
+		json.NewDecoder(result).Decode(version)
+		return version
+	case "version-group":
+		versionGroup := new(VersionGroup)
+		json.NewDecoder(result).Decode(versionGroup)
+		return versionGroup
+	case "item":
+		item := new(Item)
+		json.NewDecoder(result).Decode(item)
+		return item
+	case "item-attribute":
+		itemAttribute := new(ItemAttribute)
+		json.NewDecoder(result).Decode(itemAttribute)
+		return itemAttribute
+	case "item-category":
+		itemCategory := new(ItemCategory)
+		json.NewDecoder(result).Decode(itemCategory)
+		return itemCategory
+	case "item-fling-effect":
+		itemFlingEffect := new(ItemFlingEffect)
+		json.NewDecoder(result).Decode(itemFlingEffect)
+		return itemFlingEffect
+	case "item-pocket":
+		itemPocket := new(ItemPocket)
+		json.NewDecoder(result).Decode(itemPocket)
+		return itemPocket
 	}
 	return nil
 }
