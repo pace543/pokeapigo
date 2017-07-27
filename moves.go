@@ -1,4 +1,4 @@
-package pokeapiGo
+package pokeapigo
 
 type Move struct {
 	Id                   int

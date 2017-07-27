@@ -1,4 +1,4 @@
-package pokeapiGo
+package pokeapigo
 
 import (
 	"encoding/json"
@@ -63,7 +63,7 @@ func (c *Client) Init() {
 
 func (c *Client) AddJobs(j ...*Job) {
 	go func() {
-		for job := range j {
+		for _, job := range j {
 			c.Jobs <- job
 		}
 	}()

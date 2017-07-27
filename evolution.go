@@ -1,4 +1,4 @@
-package pokeapiGo
+package pokeapigo
 
 type EvolutionChain struct {
 	Id                int

@@ -1,6 +1,7 @@
-package pokeapiGo
+package pokeapigo
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -28,10 +29,11 @@ type NamedAPIResourceList struct {
 }
 
 func (namedResource *NamedAPIResource) GetEndpointWithId() *Job {
-	var stringSlice = strings.Split(namedResource.Url, "/")
+	stringSlice := strings.Split(namedResource.Url, "/")
+	num, _ := strconv.Atoi(stringSlice[len(stringSlice)-1])
 	return &Job{
 		Endpoint: stringSlice[len(stringSlice)-2],
-		Id:       stringSlice[len(stringSlice)-1],
+		Id:       num,
 	}
 }
 

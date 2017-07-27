@@ -1,4 +1,4 @@
-package pokeapiGo
+package pokeapigo
 
 type Ability struct {
 	Id                  int

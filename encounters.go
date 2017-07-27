@@ -1,4 +1,4 @@
-package pokeapiGo
+package pokeapigo
 
 type EncounterMethod struct {
 	id    int

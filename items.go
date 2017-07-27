@@ -1,4 +1,4 @@
-package pokeapiGo
+package pokeapigo
 
 type Item struct {
 	Id                  int

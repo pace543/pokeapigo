@@ -1,4 +1,4 @@
-package pokeapiGo
+package pokeapigo
 
 type Generation struct {
 	Id              int
