@@ -233,6 +233,70 @@ func (j *Job) getStruct(result io.ReadCloser) interface{} {
 		region := new(Region)
 		json.NewDecoder(result).Decode(region)
 		return region
+	case "ability":
+		ability := new(Ability)
+		json.NewDecoder(result).Decode(ability)
+		return ability
+	case "characteristic":
+		characteristic := new(Characteristic)
+		json.NewDecoder(result).Decode(characteristic)
+		return characteristic
+	case "egg-group":
+		eggGroup := new(EggGroup)
+		json.NewDecoder(result).Decode(eggGroup)
+		return eggGroup
+	case "gender":
+		gender := new(Gender)
+		json.NewDecoder(result).Decode(gender)
+		return gender
+	case "growth-rate":
+		growthRate := new(GrowthRate)
+		json.NewDecoder(result).Decode(growthRate)
+		return growthRate
+	case "nature":
+		nature := new(Nature)
+		json.NewDecoder(result).Decode(nature)
+		return nature
+	case "pokeathlon-stat":
+		pokeathlonStat := new(PokeathlonStat)
+		json.NewDecoder(result).Decode(pokeathlonStat)
+		return pokeathlonStat
+	case "pokemon":
+		pokemon := new(Pokemon)
+		json.NewDecoder(result).Decode(pokemon)
+		return pokemon
+	case "pokemon-color":
+		pokemonColor := new(PokemonColor)
+		json.NewDecoder(result).Decode(pokemonColor)
+		return pokemonColor
+	case "pokemon-form":
+		pokemonForm := new(PokemonForm)
+		json.NewDecoder(result).Decode(pokemonForm)
+		return pokemonForm
+	case "pokemon-habitat":
+		pokemonHabitat := new(PokemonHabitat)
+		json.NewDecoder(result).Decode(pokemonHabitat)
+		return pokemonHabitat
+	case "pokemon-shape":
+		pokemonShape := new(PokemonShape)
+		json.NewDecoder(result).Decode(pokemonShape)
+		return pokemonShape
+	case "pokemon-species":
+		pokemonSpecies := new(PokemonSpecies)
+		json.NewDecoder(result).Decode(pokemonSpecies)
+		return pokemonSpecies
+	case "stat":
+		stat := new(Stat)
+		json.NewDecoder(result).Decode(stat)
+		return stat
+	case "type":
+		type1 := new(Type)
+		json.NewDecoder(result).Decode(type1)
+		return type1
+	case "language":
+		language := new(Language)
+		json.NewDecoder(result).Decode(language)
+		return language
 	}
 	return nil
 }

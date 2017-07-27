@@ -95,3 +95,12 @@ type VersionGroupFlavorText struct {
 	Language      NamedAPIResource
 	Version_Group NamedAPIResource
 }
+
+type Language struct {
+	Id       int
+	Name     string
+	Official bool
+	Iso639   string
+	Iso3166  string
+	Names    []Name
+}
