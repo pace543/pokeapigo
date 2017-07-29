@@ -3,6 +3,7 @@ package pokeapigo
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/patrickmn/go-cache"
 	"io"
 	"net/http"
 	"strconv"
@@ -13,8 +14,8 @@ type Client struct {
 	Http       *http.Client
 	NumWorkers int
 	cache      *cache.Cache
-	Jobs       chan *Job
-	Results    chan *Result
+	jobs       chan *Job
+	results    chan *Result
 }
 
 type ClientParam struct {
@@ -60,32 +61,29 @@ func NewClient(param *ClientParam) *Client {
 	} else {
 		clientPtr.NumWorkers = param.NumWorkers
 	}
-	clientPtr.Jobs = make(chan *Job)
-	clientPtr.Results = make(chan *Result)
+	clientPtr.jobs = make(chan *Job)
+	clientPtr.results = make(chan *Result)
 	clientPtr.cache = cache.New(5*time.Minute, 10*time.Minute)
-	return clientPtr
-}
-
-func (c *Client) Init() {
-	for i := 0; i < c.NumWorkers; i++ {
-		go c.worker()
+	for i := 0; i < clientPtr.NumWorkers; i++ {
+		go clientPtr.worker()
 	}
+	return clientPtr
 }
 
 func (c *Client) AddJobs(j ...*Job) {
 	go func() {
 		for _, job := range j {
-			c.Jobs <- job
+			c.jobs <- job
 		}
 	}()
 }
 
 func (c *Client) PullResult() *Result {
-	return <-c.Results
+	return <-c.results
 }
 
 func (c *Client) worker() {
-	for job := range c.Jobs {
+	for job := range c.jobs {
 		returned := new(Result)
 		if obj, found := c.cache.Get(job.String()); found {
 			returned.Endpoint = job.Endpoint
@@ -107,7 +105,7 @@ func (c *Client) worker() {
 			}
 			result.Body.Close()
 		}
-		c.Results <- returned
+		c.results <- returned
 	}
 }
 
