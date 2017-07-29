@@ -6,12 +6,15 @@ A concurrent Go wrapper with caching based on worker goroutines for pokeapi v2.
 
 ## Usage
 pokeapigo is designed around the concept of Jobs and Results.
+
 First, create a pointer for Client by passing a &ClientParam to pokeapiGo.NewClient():
     ```
     pokeapiClient := pokeapigo.NewClient(&pokeapigo.ClientParam{})
     ```
+
 You can specify a specific *http.Client and the number of worker goroutines in &ClientParam (defaults are a *http.Client
-with a timeout of 10 seconds and 3 worker goroutines)
+with a timeout of 10 seconds and 3 worker goroutines).
+
 Next, pass any number of &Job to pokeapiClient.AddJobs():
     ```
     pokeapiClient.AddJobs(&pokeapiClient.Job{
@@ -20,17 +23,20 @@ Next, pass any number of &Job to pokeapiClient.AddJobs():
         Name:
     }, ...)
     ```
+
 Then, in a for-loop, obtain the results:
     ```
     for {
         res := pokeapiClient.PullResult()
     }
     ```
+
 You will need to use a type assertion on res.Data to obtain a struct containing the information pulled for the given
 endpoint and id/name:
     ```
     res.Data.(*pokeapigo.Berry) // for berry endpoint
     ```
+
 If in a for-loop, you could use a type switch:
     ```
     for {
@@ -42,7 +48,13 @@ If in a for-loop, you could use a type switch:
 
 ## Example
 ```
-    pokeapiClient := pokeapigo.NewClient(&pokeapigo.ClientParam{})
+import (
+	"../pokeapigo"
+	"fmt"
+)
+
+func main() {
+	pokeapiClient := pokeapigo.NewClient(&pokeapigo.ClientParam{})
 	pokeapiClient.AddJobs(&pokeapigo.Job{
 		Endpoint: "berry-firmness",
 		Id: 1,
@@ -82,6 +94,7 @@ If in a for-loop, you could use a type switch:
 	})
 	res := pokeapiClient.PullResult()
 	fmt.Println(res.Data.(*pokeapigo.EvolutionTrigger))
+}
 ```
 
 ## Built With

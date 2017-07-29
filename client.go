@@ -1,3 +1,4 @@
+// Package pokeapigo provides a concurrent Go wrapper with caching based on worker goroutines for pokeapi v2.
 package pokeapigo
 
 import (
@@ -10,6 +11,7 @@ import (
 	"time"
 )
 
+// Client is the struct through which requests are made and received.
 type Client struct {
 	Http       *http.Client
 	NumWorkers int
@@ -18,11 +20,13 @@ type Client struct {
 	results    chan *Result
 }
 
+// ClientParam contains options to be passed to the NewClient function.
 type ClientParam struct {
 	Http       *http.Client
 	NumWorkers int
 }
 
+// Job represents a request to pokeapi v2.
 type Job struct {
 	Endpoint string
 	Id       int
@@ -43,12 +47,14 @@ func (j *Job) String() string {
 	return j.Endpoint + ":" + j.getItem()
 }
 
+// Result represents returned information from pokeapi v2.
 type Result struct {
 	Endpoint string
 	Data     interface{}
 	Error    error
 }
 
+// NewClient takes a *ClientParam and returns a *Client. Must be called in order to use the package.
 func NewClient(param *ClientParam) *Client {
 	clientPtr := new(Client)
 	if param.Http == nil {
@@ -70,6 +76,8 @@ func NewClient(param *ClientParam) *Client {
 	return clientPtr
 }
 
+// AddJobs takes a variable number of *Job and uses a goroutine and an anonymous function to add those *Job to
+// the jobs channel in the client on which the method is called.
 func (c *Client) AddJobs(j ...*Job) {
 	go func() {
 		for _, job := range j {
@@ -78,6 +86,7 @@ func (c *Client) AddJobs(j ...*Job) {
 	}()
 }
 
+// PullResult returns a *Result from the results channel in the client on which the method is called.
 func (c *Client) PullResult() *Result {
 	return <-c.results
 }
