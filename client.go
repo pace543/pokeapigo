@@ -12,8 +12,14 @@ import (
 type Client struct {
 	Http       *http.Client
 	NumWorkers int
+	cache      *cache.Cache
 	Jobs       chan *Job
 	Results    chan *Result
+}
+
+type ClientParam struct {
+	Http       *http.Client
+	NumWorkers int
 }
 
 type Job struct {
@@ -32,26 +38,31 @@ func (j *Job) getItem() string {
 	}
 }
 
+func (j *Job) String() string {
+	return j.Endpoint + ":" + j.getItem()
+}
+
 type Result struct {
 	Endpoint string
 	Data     interface{}
 	Error    error
 }
 
-func NewClient(client *http.Client, numWorkers int) *Client {
+func NewClient(param *ClientParam) *Client {
 	clientPtr := new(Client)
-	if client == nil {
+	if param.Http == nil {
 		clientPtr.Http = &http.Client{Timeout: 10 * time.Second}
 	} else {
-		clientPtr.Http = client
+		clientPtr.Http = param.Http
 	}
-	if numWorkers == 0 {
+	if param.NumWorkers == 0 {
 		clientPtr.NumWorkers = 3
 	} else {
-		clientPtr.NumWorkers = numWorkers
+		clientPtr.NumWorkers = param.NumWorkers
 	}
 	clientPtr.Jobs = make(chan *Job)
 	clientPtr.Results = make(chan *Result)
+	clientPtr.cache = cache.New(5*time.Minute, 10*time.Minute)
 	return clientPtr
 }
 
@@ -75,19 +86,27 @@ func (c *Client) PullResult() *Result {
 
 func (c *Client) worker() {
 	for job := range c.Jobs {
-		fullUrl := fmt.Sprintf("https://pokeapi.co/api/v2/%v/%v", job.Endpoint, job.getItem())
-		result, err := c.Http.Get(fullUrl)
 		returned := new(Result)
-		if err != nil {
+		if obj, found := c.cache.Get(job.String()); found {
 			returned.Endpoint = job.Endpoint
-			returned.Data = ""
-			returned.Error = err
-		} else {
-			returned.Endpoint = job.Endpoint
-			returned.Data = job.getStruct(result.Body)
+			returned.Data = obj.(*Result).Data
 			returned.Error = nil
+			fmt.Println("here")
+		} else {
+			fullUrl := fmt.Sprintf("https://pokeapi.co/api/v2/%v/%v", job.Endpoint, job.getItem())
+			result, err := c.Http.Get(fullUrl)
+			if err != nil {
+				returned.Endpoint = job.Endpoint
+				returned.Data = ""
+				returned.Error = err
+			} else {
+				returned.Endpoint = job.Endpoint
+				returned.Data = job.getStruct(result.Body)
+				returned.Error = nil
+				c.cache.Set(job.String(), returned, cache.DefaultExpiration)
+			}
+			result.Body.Close()
 		}
-		result.Body.Close()
 		c.Results <- returned
 	}
 }
