@@ -8,6 +8,7 @@ A concurrent Go wrapper with caching based on worker goroutines for pokeapi v2.
 pokeapigo is designed around the concept of Jobs and Results.
 
 First, create a pointer for Client by passing a &ClientParam to pokeapiGo.NewClient():
+
     ```
     pokeapiClient := pokeapigo.NewClient(&pokeapigo.ClientParam{})
     ```
@@ -16,6 +17,7 @@ You can specify a specific *http.Client and the number of worker goroutines in &
 with a timeout of 10 seconds and 3 worker goroutines).
 
 Next, pass any number of &Job to pokeapiClient.AddJobs():
+
     ```
     pokeapiClient.AddJobs(&pokeapiClient.Job{
         Endpoint: // endpoint from pokeapi.co documentation
@@ -25,6 +27,7 @@ Next, pass any number of &Job to pokeapiClient.AddJobs():
     ```
 
 Then, in a for-loop, obtain the results:
+
     ```
     for {
         res := pokeapiClient.PullResult()
@@ -33,11 +36,13 @@ Then, in a for-loop, obtain the results:
 
 You will need to use a type assertion on res.Data to obtain a struct containing the information pulled for the given
 endpoint and id/name:
+
     ```
     res.Data.(*pokeapigo.Berry) // for berry endpoint
     ```
 
 If in a for-loop, you could use a type switch:
+
     ```
     for {
         switch res.Data.(type) {
@@ -88,6 +93,7 @@ func main() {
 		}
 	}
 
+    // caching - doesn't make another HTTP request.
 	pokeapiClient.AddJobs(&pokeapigo.Job{
 		Endpoint: "evolution-trigger",
 		Id: 1,

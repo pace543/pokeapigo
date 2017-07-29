@@ -28,8 +28,21 @@ type NamedAPIResourceList struct {
 	Results  []NamedAPIResource
 }
 
-func (namedResource *NamedAPIResource) GetEndpointWithId() *Job {
+// GetJob is called on a *NamedAPIResource and returns a *Job which can then be submitted to the client to receive
+// a result containing the data which the *NamedAPIResource refers to.
+func (namedResource *NamedAPIResource) GetJob() *Job {
 	stringSlice := strings.Split(namedResource.Url, "/")
+	num, _ := strconv.Atoi(stringSlice[len(stringSlice)-1])
+	return &Job{
+		Endpoint: stringSlice[len(stringSlice)-2],
+		Id:       num,
+	}
+}
+
+// GetJob is called on a *APIResource and returns a *Job which can then be submitted to the client to receive
+// a result containing the data which the *APIResource refers to.
+func (apires *APIResource) GetJob() *Job {
+	stringSlice := strings.Split(apires.Url, "/")
 	num, _ := strconv.Atoi(stringSlice[len(stringSlice)-1])
 	return &Job{
 		Endpoint: stringSlice[len(stringSlice)-2],
