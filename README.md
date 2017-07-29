@@ -16,7 +16,7 @@ with a timeout of 10 seconds and 3 worker goroutines).
 
 Next, pass any number of &Job to pokeapiClient.AddJobs():
 
-    pokeapiClient.AddJobs(&pokeapiClient.Job{
+    pokeapiClient.AddJobs(&pokeapigo.Job{
         Endpoint: // endpoint from pokeapi.co documentation
         Id:       // out of id and name, use this because some endpoints only accept id
         Name:
@@ -83,7 +83,6 @@ func main() {
 		}
 	}
 
-    // caching - doesn't make another HTTP request.
 	pokeapiClient.AddJobs(&pokeapigo.Job{
 		Endpoint: "evolution-trigger",
 		Id: 1,
